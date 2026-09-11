@@ -177,17 +177,19 @@ function populateResult(result, handle) {
   const hasStats =
     data && (data.publicacoes != null || data.seguidores != null || data.seguindo != null);
 
+  // Always show the stats row - dashes when the lookup didn't come back with
+  // numbers, so this state still reads as a finished card instead of a
+  // broken/half-loaded one. Never fill it with made-up numbers.
+  statPosts.textContent = hasStats ? formatCount(data.publicacoes) : "–";
+  statFollowers.textContent = hasStats ? formatCount(data.seguidores) : "–";
+  statFollowing.textContent = hasStats ? formatCount(data.seguindo) : "–";
+  resultStatsGrid.hidden = false;
+
+  resultTitle.textContent = "Confirme o Instagram";
   if (hasStats) {
-    statPosts.textContent = formatCount(data.publicacoes);
-    statFollowers.textContent = formatCount(data.seguidores);
-    statFollowing.textContent = formatCount(data.seguindo);
-    resultStatsGrid.hidden = false;
-    resultTitle.textContent = "Confirme o Instagram";
     resultSubtitle.innerHTML = `É esse o perfil de <strong class="grad">@${handle}</strong>?`;
   } else {
-    resultStatsGrid.hidden = true;
-    resultTitle.textContent = `Perfil @${handle} encontrado!`;
-    resultSubtitle.textContent = "Sua dieta personalizada está pronta.";
+    resultSubtitle.innerHTML = `Prévia de <strong class="grad">@${handle}</strong> indisponível agora, mas pode confirmar mesmo assim.`;
   }
 }
 
