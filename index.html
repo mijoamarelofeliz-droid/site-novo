@@ -82,18 +82,23 @@
 
       <div class="modal-step" id="stepResult" hidden>
         <h2 class="modal-title" id="resultTitle">Confirme o Instagram</h2>
-        <p class="modal-subtitle" id="resultSubtitle">É esse o perfil de <strong id="resultHandle" class="grad"></strong>?</p>
+        <p class="modal-subtitle" id="resultSubtitle">Encontramos esse perfil público:</p>
 
         <div class="result-avatar" id="resultAvatar">
           <img id="resultAvatarImg" alt="" referrerpolicy="no-referrer" hidden />
           <span id="resultAvatarFallback">🐾</span>
         </div>
 
+        <p class="result-username grad" id="resultUsername"></p>
+        <p class="result-name" id="resultName" hidden></p>
+
         <div class="result-stats" id="resultStatsGrid" hidden>
           <div class="result-stat"><strong id="statPosts">0</strong><span>posts</span></div>
           <div class="result-stat"><strong id="statFollowers">0</strong><span>seguidores</span></div>
           <div class="result-stat"><strong id="statFollowing">0</strong><span>seguindo</span></div>
         </div>
+
+        <p class="result-bio" id="resultBio" hidden></p>
 
         <div class="result-actions">
           <button type="button" class="btn-secondary" id="backBtn">Corrigir @</button>

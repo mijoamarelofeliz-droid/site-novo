@@ -147,10 +147,13 @@ const resultTitle = document.getElementById("resultTitle");
 const resultSubtitle = document.getElementById("resultSubtitle");
 const resultAvatarImg = document.getElementById("resultAvatarImg");
 const resultAvatarFallback = document.getElementById("resultAvatarFallback");
+const resultUsername = document.getElementById("resultUsername");
+const resultName = document.getElementById("resultName");
 const resultStatsGrid = document.getElementById("resultStatsGrid");
 const statPosts = document.getElementById("statPosts");
 const statFollowers = document.getElementById("statFollowers");
 const statFollowing = document.getElementById("statFollowing");
+const resultBio = document.getElementById("resultBio");
 const backBtn = document.getElementById("backBtn");
 
 function formatCount(n) {
@@ -177,6 +180,22 @@ function populateResult(result, handle) {
   const hasStats =
     data && (data.publicacoes != null || data.seguidores != null || data.seguindo != null);
 
+  resultUsername.textContent = "@" + (data?.username || handle);
+
+  if (data && data.nome) {
+    resultName.textContent = data.nome;
+    resultName.hidden = false;
+  } else {
+    resultName.hidden = true;
+  }
+
+  if (data && data.biografia) {
+    resultBio.textContent = data.biografia;
+    resultBio.hidden = false;
+  } else {
+    resultBio.hidden = true;
+  }
+
   // Always show the stats row - dashes when the lookup didn't come back with
   // numbers, so this state still reads as a finished card instead of a
   // broken/half-loaded one. Never fill it with made-up numbers.
@@ -186,11 +205,9 @@ function populateResult(result, handle) {
   resultStatsGrid.hidden = false;
 
   resultTitle.textContent = "Confirme o Instagram";
-  if (hasStats) {
-    resultSubtitle.innerHTML = `É esse o perfil de <strong class="grad">@${handle}</strong>?`;
-  } else {
-    resultSubtitle.innerHTML = `Prévia de <strong class="grad">@${handle}</strong> indisponível agora, mas pode confirmar mesmo assim.`;
-  }
+  resultSubtitle.textContent = hasStats
+    ? "Encontramos esse perfil público:"
+    : "Prévia indisponível agora, mas pode confirmar mesmo assim.";
 }
 
 backBtn.addEventListener("click", () => {

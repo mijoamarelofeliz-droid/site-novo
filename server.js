@@ -11,9 +11,9 @@ const PORT = process.env.PORT || 3000;
 // direto (sem CORS, sem URL de API separada pra manter em sincronia).
 app.use(express.static(__dirname));
 
-// Cache de 5 minutos para não martelar o Instagram com a mesma consulta
+// Cache de 30 minutos para não martelar o Instagram com a mesma consulta
 // (evita rate limit e deixa respostas repetidas instantâneas).
-const cache = new NodeCache({ stdTTL: 300 });
+const cache = new NodeCache({ stdTTL: 1800 });
 
 app.get("/perfil/:username", async (req, res) => {
   const raw = req.params.username;

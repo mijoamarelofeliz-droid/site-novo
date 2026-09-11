@@ -325,6 +325,27 @@ html, body {
   border-radius: 50%;
 }
 
+.result-username {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.result-name {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: #a9a3bb;
+  font-weight: 500;
+}
+
+.result-bio {
+  margin: -4px 0 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #cfcad9;
+  white-space: pre-line;
+}
+
 .result-stats {
   display: flex;
   justify-content: center;
