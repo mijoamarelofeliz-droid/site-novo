@@ -81,9 +81,12 @@
       </div>
 
       <div class="modal-step" id="stepResult" hidden>
-        <div class="result-avatar">🐾</div>
+        <div class="result-avatar" id="resultAvatar">
+          <img id="resultAvatarImg" alt="" referrerpolicy="no-referrer" hidden />
+          <span id="resultAvatarFallback">🐾</span>
+        </div>
         <h2 class="modal-title">Perfil <span id="resultHandle" class="grad"></span> encontrado!</h2>
-        <p class="modal-subtitle">Sua dieta personalizada está pronta.</p>
+        <p class="modal-subtitle" id="resultStats">Sua dieta personalizada está pronta.</p>
         <button type="button" class="cta modal-submit" id="continueBtn">Ver Dieta Personalizada</button>
       </div>
     </div>

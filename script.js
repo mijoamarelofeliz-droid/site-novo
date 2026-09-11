@@ -141,12 +141,39 @@ form.addEventListener("submit", async (e) => {
   ]);
 
   resultHandle.textContent = "@" + raw;
+  populateResult(result);
   showStep(stepResult);
-
-  // Hook point: `result.found` / `result.data` has whatever came back from
-  // the lookup above, in case you want to use it once a real backend/API is wired in.
-  console.log("Instagram lookup result:", result);
 });
+
+const resultAvatarImg = document.getElementById("resultAvatarImg");
+const resultAvatarFallback = document.getElementById("resultAvatarFallback");
+const resultStats = document.getElementById("resultStats");
+
+function populateResult(result) {
+  const foto = result.found && result.data ? result.data.foto : null;
+
+  if (foto) {
+    resultAvatarImg.src = foto;
+    resultAvatarImg.hidden = false;
+    resultAvatarFallback.hidden = true;
+    resultAvatarImg.onerror = () => {
+      resultAvatarImg.hidden = true;
+      resultAvatarFallback.hidden = false;
+    };
+  } else {
+    resultAvatarImg.hidden = true;
+    resultAvatarImg.removeAttribute("src");
+    resultAvatarFallback.hidden = false;
+  }
+
+  if (result.found && result.data) {
+    const { nome, seguidores } = result.data;
+    const seguidoresTxt = typeof seguidores === "number" ? `${seguidores.toLocaleString("pt-BR")} seguidores` : "";
+    resultStats.textContent = [nome, seguidoresTxt].filter(Boolean).join(" · ") || "Sua dieta personalizada está pronta.";
+  } else {
+    resultStats.textContent = "Sua dieta personalizada está pronta.";
+  }
+}
 
 continueBtn.addEventListener("click", () => {
   closeModal();
