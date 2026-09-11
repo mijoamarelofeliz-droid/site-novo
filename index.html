@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>O que seu Cachorro deve comer?</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+
+  <main class="hero">
+    <section class="card">
+      <h1 class="title">
+        O que seu <span class="grad">Cachorro</span><br />
+        deve comer?
+      </h1>
+      <p class="subtitle">
+        Descubra a verdade sobre <span class="grad-alt">a alimentação<br />ideal do cão</span>
+      </p>
+
+      <button class="cta">
+        <svg class="eye" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3.5" stroke="white" stroke-width="2"/>
+        </svg>
+        Ver Dieta
+      </button>
+
+      <ul class="badges">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" stroke="#c9a8ff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          100% Saudável
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="5" stroke="#c9a8ff" stroke-width="1.6"/><circle cx="16" cy="16" r="5" stroke="#c9a8ff" stroke-width="1.6"/></svg>
+          Grátis
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="#c9a8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Teste Grátis
+        </li>
+      </ul>
+    </section>
+
+    <p class="counter">
+      <strong id="count">0</strong> Cães analisados hoje (<span id="weekday"></span>)
+    </p>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+
+      <div class="modal-step" id="stepForm">
+        <h2 id="modalTitle" class="modal-title">Qual o @ do seu cão no Instagram?</h2>
+        <p class="modal-subtitle">Vamos analisar o perfil para montar a dieta ideal</p>
+        <form id="igForm" class="ig-form">
+          <div class="ig-input-wrap">
+            <span class="at">@</span>
+            <input
+              id="igInput"
+              type="text"
+              inputmode="text"
+              autocomplete="off"
+              placeholder="usuario_do_cao"
+              maxlength="30"
+              required
+            />
+          </div>
+          <p class="ig-error" id="igError"></p>
+          <button type="submit" class="cta modal-submit">Buscar Perfil</button>
+        </form>
+      </div>
+
+      <div class="modal-step" id="stepLoading" hidden>
+        <div class="spinner"></div>
+        <p class="modal-loading-text">
+          Analisando <strong id="loadingHandle"></strong>…
+        </p>
+      </div>
+
+      <div class="modal-step" id="stepResult" hidden>
+        <div class="result-avatar">🐾</div>
+        <h2 class="modal-title">Perfil <span id="resultHandle" class="grad"></span> encontrado!</h2>
+        <p class="modal-subtitle">Sua dieta personalizada está pronta.</p>
+        <button type="button" class="cta modal-submit" id="continueBtn">Ver Dieta Personalizada</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

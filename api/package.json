@@ -1,0 +1,16 @@
+{
+  "name": "instagram-profile-api",
+  "version": "1.0.0",
+  "description": "API para consultar dados públicos de perfis do Instagram (foto, nome, seguidores, seguindo, bio)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "axios": "^1.7.7",
+    "node-cache": "^5.1.2"
+  }
+}
