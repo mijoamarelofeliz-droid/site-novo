@@ -76,7 +76,6 @@ const stepForm = document.getElementById("stepForm");
 const stepLoading = document.getElementById("stepLoading");
 const stepResult = document.getElementById("stepResult");
 const loadingHandle = document.getElementById("loadingHandle");
-const resultHandle = document.getElementById("resultHandle");
 const continueBtn = document.getElementById("continueBtn");
 
 const HANDLE_RE = /^[a-zA-Z0-9._]{1,30}$/;
@@ -140,20 +139,29 @@ form.addEventListener("submit", async (e) => {
     new Promise((resolve) => setTimeout(resolve, 1800)),
   ]);
 
-  resultHandle.textContent = "@" + raw;
-  populateResult(result);
+  populateResult(result, raw);
   showStep(stepResult);
 });
 
+const resultTitle = document.getElementById("resultTitle");
+const resultSubtitle = document.getElementById("resultSubtitle");
 const resultAvatarImg = document.getElementById("resultAvatarImg");
 const resultAvatarFallback = document.getElementById("resultAvatarFallback");
-const resultStats = document.getElementById("resultStats");
+const resultStatsGrid = document.getElementById("resultStatsGrid");
+const statPosts = document.getElementById("statPosts");
+const statFollowers = document.getElementById("statFollowers");
+const statFollowing = document.getElementById("statFollowing");
+const backBtn = document.getElementById("backBtn");
 
-function populateResult(result) {
-  const foto = result.found && result.data ? result.data.foto : null;
+function formatCount(n) {
+  return typeof n === "number" ? n.toLocaleString("pt-BR") : "–";
+}
 
-  if (foto) {
-    resultAvatarImg.src = foto;
+function populateResult(result, handle) {
+  const data = result.found ? result.data : null;
+
+  if (data && data.foto) {
+    resultAvatarImg.src = data.foto;
     resultAvatarImg.hidden = false;
     resultAvatarFallback.hidden = true;
     resultAvatarImg.onerror = () => {
@@ -166,14 +174,27 @@ function populateResult(result) {
     resultAvatarFallback.hidden = false;
   }
 
-  if (result.found && result.data) {
-    const { nome, seguidores } = result.data;
-    const seguidoresTxt = typeof seguidores === "number" ? `${seguidores.toLocaleString("pt-BR")} seguidores` : "";
-    resultStats.textContent = [nome, seguidoresTxt].filter(Boolean).join(" · ") || "Sua dieta personalizada está pronta.";
+  const hasStats =
+    data && (data.publicacoes != null || data.seguidores != null || data.seguindo != null);
+
+  if (hasStats) {
+    statPosts.textContent = formatCount(data.publicacoes);
+    statFollowers.textContent = formatCount(data.seguidores);
+    statFollowing.textContent = formatCount(data.seguindo);
+    resultStatsGrid.hidden = false;
+    resultTitle.textContent = "Confirme o Instagram";
+    resultSubtitle.innerHTML = `É esse o perfil de <strong class="grad">@${handle}</strong>?`;
   } else {
-    resultStats.textContent = "Sua dieta personalizada está pronta.";
+    resultStatsGrid.hidden = true;
+    resultTitle.textContent = `Perfil @${handle} encontrado!`;
+    resultSubtitle.textContent = "Sua dieta personalizada está pronta.";
   }
 }
+
+backBtn.addEventListener("click", () => {
+  showStep(stepForm);
+  setTimeout(() => input.focus(), 150);
+});
 
 continueBtn.addEventListener("click", () => {
   closeModal();
