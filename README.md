@@ -5,38 +5,36 @@ usando uma API própria (Express) para buscar os dados sem esbarrar em CORS.
 
 ## Estrutura
 
-- `index.html`, `styles.css`, `script.js` — site estático (frontend).
-- `api/` — API Node/Express (`server.js` + `instagram.js`) que consulta o
-  Instagram e expõe `GET /perfil/:username`.
-- `render.yaml` — configuração de deploy da API no Render (Blueprint).
-- `.vercelignore` — exclui a pasta `api/` do deploy do frontend no Vercel
-  (evita que o Vercel trate `api/*.js` como serverless functions).
+Servidor único: o mesmo `server.js` serve o site estático (`index.html`,
+`styles.css`, `script.js`) e a API (`GET /perfil/:username`), na mesma
+origem — por isso o front chama `/perfil/...` direto, sem CORS e sem URL
+de API separada pra manter em sincronia.
+
+- `index.html`, `styles.css`, `script.js` — site.
+- `server.js` — servidor Express (serve os arquivos estáticos + a API).
+- `instagram.js` — lógica de consulta ao Instagram.
+- `render.yaml` — configuração de deploy no Render (Blueprint).
 
 ## Rodando localmente
 
-1. API:
-   ```
-   cd api
-   npm install
-   node server.js
-   ```
-   Sobe em `http://localhost:3000`.
-2. Frontend: abra `index.html` no navegador (ou sirva com a extensão Live
-   Server do VS Code). O `script.js` chama a API em `http://localhost:3000`.
+```
+npm install
+node server.js
+```
+
+Abre `http://localhost:3000` no navegador — site e API já saem juntos.
 
 ## Checklist de deploy
 
 - [ ] `git push -u origin master` — código no GitHub.
-- [ ] Deploy da API no **Render**: New → Blueprint → conectar este repositório
-      (ele lê o `render.yaml` sozinho) → Apply/Deploy. Copiar a URL pública
-      gerada (ex: `https://instagram-profile-api-xxxx.onrender.com`).
-- [ ] Atualizar `API_BASE_URL` em `script.js` (linha ~113) para essa URL de
-      produção, e dar `git commit` + `git push`.
-- [ ] Deploy do frontend na **Vercel**: Add New → Project → importar este
-      repositório → Framework preset "Other" → Root Directory `.` → Deploy.
-      Copiar a URL do site (ex: `https://apiinsta.vercel.app`).
-- [ ] Testar o fluxo completo no ar: abrir a URL da Vercel, clicar em
-      "Ver Dieta", digitar um @ público real e conferir se o perfil carrega.
+- [ ] Deploy no **Render**: New → Blueprint → conectar este repositório
+      (ele lê o `render.yaml` sozinho) → Apply/Deploy.
+- [ ] Testar o fluxo completo na URL pública que o Render gerar: abrir o
+      site, clicar em "Ver Dieta", digitar um @ público real e conferir se
+      o perfil carrega.
+
+Só isso — não precisa mais de um segundo deploy pro frontend (Vercel/Netlify),
+já que o mesmo servidor cuida de tudo.
 
 ## Observação sobre rate limit
 

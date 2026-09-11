@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const NodeCache = require("node-cache");
 const { fetchProfile, InstagramError } = require("./instagram");
@@ -5,24 +6,14 @@ const { fetchProfile, InstagramError } = require("./instagram");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Libera acesso para o front-end estático (aberto em outra origem/porta).
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+// Serve o site estático (index.html, styles.css, script.js) e a API
+// a partir do mesmo servidor/origem, então o front pode chamar /perfil/:username
+// direto (sem CORS, sem URL de API separada pra manter em sincronia).
+app.use(express.static(__dirname));
 
 // Cache de 5 minutos para não martelar o Instagram com a mesma consulta
 // (evita rate limit e deixa respostas repetidas instantâneas).
 const cache = new NodeCache({ stdTTL: 300 });
-
-app.get("/", (req, res) => {
-  res.json({
-    nome: "Instagram Profile API",
-    uso: "GET /perfil/:username  (ex: /perfil/instagram ou /perfil/@instagram)",
-    aviso:
-      "Consulta apenas dados públicos de perfis públicos, via endpoint público do Instagram. Sem login, sem acesso a contas privadas.",
-  });
-});
 
 app.get("/perfil/:username", async (req, res) => {
   const raw = req.params.username;

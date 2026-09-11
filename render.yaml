@@ -1,8 +1,7 @@
 services:
   - type: web
-    name: instagram-profile-api
+    name: apiinsta
     runtime: node
-    rootDir: api
     plan: free
     buildCommand: npm install
     startCommand: node server.js

@@ -108,13 +108,12 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && overlay.classList.contains("open")) closeModal();
 });
 
-// Searches a public Instagram profile via the local Instagram Profile API
-// (see api/server.js). Requires the API running, e.g. `npm start` inside api/.
-const API_BASE_URL = "http://localhost:3000";
-
+// Searches a public Instagram profile via the Instagram Profile API served
+// by this same app (see server.js). Relative URL: works the same locally
+// (`node server.js`) and in production, no separate API URL to keep in sync.
 async function searchInstagramProfile(handle) {
   try {
-    const res = await fetch(`${API_BASE_URL}/perfil/${encodeURIComponent(handle)}`);
+    const res = await fetch(`/perfil/${encodeURIComponent(handle)}`);
     const data = await res.json();
     if (!res.ok) throw new Error(data.erro || "not ok");
     return { found: true, data };
