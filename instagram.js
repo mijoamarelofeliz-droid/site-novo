@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { HttpsProxyAgent } = require("https-proxy-agent");
+const { fetchProfileViaClaude } = require("./claude-lookup");
 
 // Se a variável de ambiente PROXY_URL estiver definida (ex: um proxy
 // residencial/rotativo pago), as chamadas ao Instagram passam por ele em vez
@@ -191,6 +192,22 @@ async function requestProfilePage(username) {
 
 async function fetchProfile(rawUsername) {
   const username = sanitizeUsername(rawUsername);
+
+  // Se houver uma chave da API da Anthropic configurada, usa o Claude (via
+  // ferramenta web_fetch) como método principal - a infraestrutura da
+  // Anthropic não está bloqueada pelo Instagram, diferente do IP do Render.
+  // Sem essa chave, cai automaticamente no scraper gratuito abaixo.
+  if (process.env.ANTHROPIC_API_KEY) {
+    try {
+      const perfil = await fetchProfileViaClaude(username);
+      if (perfil) return perfil;
+      throw new InstagramError("Perfil não encontrado ou é privado/inexistente.", 404);
+    } catch (err) {
+      if (err instanceof InstagramError) throw err;
+      console.error("Busca via Claude falhou, caindo para o scraper direto:", err.message);
+    }
+  }
+
   const response = await throttled(() => requestProfilePage(username));
 
   if (response.status === 429) {
